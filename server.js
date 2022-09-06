@@ -15,9 +15,9 @@ const db = mysql.createConnection(
     host: 'localhost',
     user: 'root',
     password: 'korbyn',
-    database: 'teamDB'
+    database: 'teamdb'
   },
-  console.log(`Connected to the teamDB database.`)
+  console.log(`Connected to the teamdb database.`)
 );
 // --------------------------------------------------------------------
 
@@ -71,15 +71,9 @@ const topPrompt = () => {
 
 const viewEmployees = () => {
   const sql = `Select * from employees`;
-  db.query(sql, (err, rows) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-    res.json({
-      message: 'success',
-      data: rows,
-    });
+  db.query(sql, function(err, res) {
+    if (err) throw err;
+    console.table(res);
     topPrompt();
   });
 }
@@ -105,7 +99,7 @@ const addRole = () => {
   ]).then(function (answer) {
 
     db.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.newRoleName, answer.newRoleSalary, answer.departmentId], function (err, res) {
-      if (err) throw err;
+      if (err)
       console.table(res);
       topPrompt()
     })
@@ -120,6 +114,8 @@ function quit() {
 }
 
 // --------------------------------------------------------------------
+
+topPrompt()
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
