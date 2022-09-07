@@ -1,5 +1,3 @@
- lines (6 sloc)  516 Bytes
-
 INSERT INTO department (name)
 VALUES ("Back of House"), 
         ("Front of House"), 
