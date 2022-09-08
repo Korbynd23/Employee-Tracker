@@ -33,6 +33,7 @@ const topPrompt = () => {
         "View All Employees",
         "Add Employee",
         "Update Employee Role",
+        "Update Employee's Manager",
         "View All Roles",
         "Add Role",
         "View All Departments",
@@ -52,7 +53,9 @@ const topPrompt = () => {
         break;
       case "Update Employee Role":
         updateEmployeeRole()
-        // updateEmployeeRole()
+        break;
+      case "Update Employee's Manager":
+        updateEmployeeMan()
         break;
       case "View All Roles":
         viewAllRoles()
@@ -194,7 +197,7 @@ const updateEmployeeRole = () => {
   .prompt([
     {
       type: "input",
-      message: "Which employee would you like to update?",
+      message: "Which employee would you like to update? (enter employees first name)",
       name: "nameUpdate"
     },
 
@@ -206,6 +209,31 @@ const updateEmployeeRole = () => {
   ])
   .then(function(answer) {
     db.query('UPDATE employees SET role_id=? WHERE first_name= ?',[answer.updateRole, answer.nameUpdate],function(err, res) {
+      if (err)
+      console.table(res);
+      topPrompt();
+    });
+  });
+}
+
+// function for updating employee's manager
+const updateEmployeeMan = () => {
+  inquirer
+  .prompt([
+    {
+      type: "input",
+      message: "Which employee would you like to update? (enter employees first name)",
+      name: "nameUpdate"
+    },
+
+    {
+      type: "input",
+      message: "What is the employee's new manager? (enter managers id)",
+      name: "updateMan"
+    }
+  ])
+  .then(function(answer) {
+    db.query('UPDATE employees SET manager_id=? WHERE first_name= ?',[answer.updateMan, answer.nameUpdate],function(err, res) {
       if (err)
       console.table(res);
       topPrompt();
